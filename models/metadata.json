@@ -1,0 +1,280 @@
+{
+  "features": [
+    "planning_demand",
+    "planning_lag_24",
+    "planning_lag_48",
+    "planning_lag_168",
+    "planning_lag_336",
+    "planning_lag_720",
+    "demand_mean_7d",
+    "demand_std_7d",
+    "hour_of_day",
+    "day_of_week",
+    "month",
+    "risk_level",
+    "traffic_congestion_level",
+    "port_congestion_level",
+    "warehouse_inventory_level",
+    "shipping_costs",
+    "lead_time_days",
+    "weather_condition_severity",
+    "eta_variation_hours",
+    "order_fulfillment_status",
+    "supplier_reliability_score",
+    "loading_unloading_time",
+    "handling_equipment_availability",
+    "customs_clearance_time",
+    "delay_probability"
+  ],
+  "ops_features": [
+    "traffic_congestion_level",
+    "port_congestion_level",
+    "warehouse_inventory_level",
+    "shipping_costs",
+    "lead_time_days",
+    "weather_condition_severity",
+    "eta_variation_hours",
+    "order_fulfillment_status",
+    "supplier_reliability_score",
+    "loading_unloading_time",
+    "handling_equipment_availability",
+    "customs_clearance_time",
+    "delay_probability"
+  ],
+  "test_metrics": {
+    "Ridge": {
+      "MAE": 65.13,
+      "RMSE": 79.26,
+      "R2": 0.5717
+    },
+    "Random Forest": {
+      "MAE": 74.02,
+      "RMSE": 88.12,
+      "R2": 0.4705
+    },
+    "Gradient Boosting": {
+      "MAE": 70.31,
+      "RMSE": 85.67,
+      "R2": 0.4995
+    }
+  },
+  "band_edges": [
+    5958.578723351739,
+    6051.44414300107
+  ],
+  "feature_meta": {
+    "planning_demand": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6020.632501251314,
+      "median": 6023.337955990688,
+      "recent": 6126.172136640642
+    },
+    "planning_lag_24": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6020.5614616851435,
+      "median": 6023.251391940577,
+      "recent": 6142.54661783409
+    },
+    "planning_lag_48": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6020.465298701307,
+      "median": 6023.161193180542,
+      "recent": 6152.6021341904325
+    },
+    "planning_lag_168": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6019.964166391157,
+      "median": 6022.480087539607,
+      "recent": 6183.114821939438
+    },
+    "planning_lag_336": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6019.22736962317,
+      "median": 6021.697650486328,
+      "recent": 6112.168603482935
+    },
+    "planning_lag_720": {
+      "min": 5634.291408925899,
+      "max": 6410.24328939724,
+      "mean": 6018.5735589049855,
+      "median": 6021.085938520973,
+      "recent": 6082.807300429893
+    },
+    "demand_mean_7d": {
+      "min": 4923.372150916465,
+      "max": 6844.863672218812,
+      "mean": 6022.311885465018,
+      "median": 6035.778280996455,
+      "recent": 5817.6992135165565
+    },
+    "demand_std_7d": {
+      "min": 3035.0621475516946,
+      "max": 3773.1066840195826,
+      "mean": 3423.988598111184,
+      "median": 3424.5961590338957,
+      "recent": 3501.978314448035
+    },
+    "hour_of_day": {
+      "min": 0.0,
+      "max": 23.0,
+      "mean": 11.499641353500701,
+      "median": 11.0,
+      "recent": 0.0
+    },
+    "day_of_week": {
+      "min": 0.0,
+      "max": 6.0,
+      "mean": 3.0,
+      "median": 3.0,
+      "recent": 3.0
+    },
+    "month": {
+      "min": 1.0,
+      "max": 12.0,
+      "mean": 6.155746140651801,
+      "median": 6.0,
+      "recent": 8.0
+    },
+    "risk_level": {
+      "min": 0.0,
+      "max": 2.0,
+      "mean": 1.6497427101200686,
+      "median": 2.0,
+      "recent": 2.0
+    },
+    "traffic_congestion_level": {
+      "min": 0.002528641510090348,
+      "max": 9.997466582765847,
+      "mean": 4.99149348295834,
+      "median": 4.981244166033586,
+      "recent": 8.870823763351071
+    },
+    "port_congestion_level": {
+      "min": 0.052076095162082676,
+      "max": 9.99999634820247,
+      "mean": 6.978722128116518,
+      "median": 8.383225336980033,
+      "recent": 7.195178424020842
+    },
+    "warehouse_inventory_level": {
+      "min": 0.000348989053595448,
+      "max": 994.4897834648577,
+      "mean": 299.2223325441918,
+      "median": 157.28802154512064,
+      "recent": 45.87627243386182
+    },
+    "shipping_costs": {
+      "min": 100.01863282900314,
+      "max": 998.802895511324,
+      "mean": 459.367163271687,
+      "median": 388.99691118908765,
+      "recent": 463.7131248012693
+    },
+    "lead_time_days": {
+      "min": 1.0000047571465553,
+      "max": 14.91680716254798,
+      "mean": 5.227003138296401,
+      "median": 3.2976536222606923,
+      "recent": 1.5807550348846588
+    },
+    "weather_condition_severity": {
+      "min": 0.00022311832082182398,
+      "max": 0.9997554025915404,
+      "mean": 0.497607990898088,
+      "median": 0.4961781478769314,
+      "recent": 0.470849590058312
+    },
+    "eta_variation_hours": {
+      "min": -1.9618945331165731,
+      "max": 4.999997231643608,
+      "mean": 2.8933096976908814,
+      "median": 3.882059226946552,
+      "recent": 0.6081744890730816
+    },
+    "order_fulfillment_status": {
+      "min": 0.001511855242632936,
+      "max": 0.9999835328337042,
+      "mean": 0.6007486856699816,
+      "median": 0.6805529540380978,
+      "recent": 0.135435077805687
+    },
+    "supplier_reliability_score": {
+      "min": 0.000278977053645632,
+      "max": 0.9997247611862777,
+      "mean": 0.5008498985226156,
+      "median": 0.503265508252994,
+      "recent": 0.8965656511289415
+    },
+    "loading_unloading_time": {
+      "min": 0.5000876482788835,
+      "max": 4.993288389477207,
+      "mean": 2.29162813561559,
+      "median": 1.9171212962803543,
+      "recent": 0.6339874813970249
+    },
+    "handling_equipment_availability": {
+      "min": 4.876145594898484e-07,
+      "max": 0.9942949731877089,
+      "mean": 0.30266180516459723,
+      "median": 0.1595150876366321,
+      "recent": 0.190152771030696
+    },
+    "customs_clearance_time": {
+      "min": 0.5000954166182497,
+      "max": 4.993120161046621,
+      "mean": 2.296404661060345,
+      "median": 1.9382733484967636,
+      "recent": 1.524819377696215
+    },
+    "delay_probability": {
+      "min": 0.006453631207123144,
+      "max": 0.9999997009792287,
+      "mean": 0.6991158413978682,
+      "median": 0.8395986077324338,
+      "recent": 0.8707838650992623
+    }
+  },
+  "ridge_weights": {
+    "planning_demand": 53.53770635851392,
+    "planning_lag_24": 8.899452115904783,
+    "planning_lag_48": -6.061112253676283,
+    "planning_lag_168": 24.501555439464866,
+    "planning_lag_336": -16.758640617216383,
+    "planning_lag_720": 8.434131007612246,
+    "demand_mean_7d": 22.092078127954494,
+    "demand_std_7d": 10.31120254789952,
+    "hour_of_day": 0.03623902985845094,
+    "day_of_week": -0.7922322021406594,
+    "month": 1.1430655188989567,
+    "risk_level": -0.19020740299392516,
+    "traffic_congestion_level": 0.2707864451818849,
+    "port_congestion_level": 0.41024305062960464,
+    "warehouse_inventory_level": -0.607193173772842,
+    "shipping_costs": -0.8558653356294059,
+    "lead_time_days": -0.022775092566878503,
+    "weather_condition_severity": -0.3512839302601868,
+    "eta_variation_hours": -0.6325248544397811,
+    "order_fulfillment_status": 0.48800645019125877,
+    "supplier_reliability_score": 0.14680769681596448,
+    "loading_unloading_time": 0.1681772924750506,
+    "handling_equipment_availability": -0.4229697230448961,
+    "customs_clearance_time": 0.11812602879972496,
+    "delay_probability": 0.01811826979765511
+  },
+  "assumptions": {
+    "demand_per_ship": 250.0,
+    "sqft_per_demand": 0.6,
+    "demand_per_worker": 120.0,
+    "ship_early": 8000.0,
+    "warehouse_early": 12.0,
+    "labour_early": 1400.0,
+    "ship_rush_premium": 0.3,
+    "warehouse_rush_premium": 0.15,
+    "labour_rush_premium": 0.13
+  }
+}
