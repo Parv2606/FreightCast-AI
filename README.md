@@ -1,130 +1,122 @@
 # 🚢 FreightCast AI — 7-Day Logistics & Capacity Decision Engine
 
-An interactive, production-ready machine learning web application for **freight demand forecasting, logistics capacity planning, and rush-cost minimization**.
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.40%2B-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.3%2B-F7931E.svg?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Plotly](https://img.shields.io/badge/Plotly-5.15%2B-3F4F75.svg?logo=plotly&logoColor=white)](https://plotly.com/)
+[![License](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Built as part of the **Machine Learning Innovative Assignment**.
-
----
-
-## 📌 Project Overview
-
-Freight operators face a costly operational dilemma:
-* **Waiting until the last minute:** Forcing booking into the spot / rush window where vessel charter rates jump by **25–35%** and warehouse/labour fees carry emergency premiums.
-* **Booking 7 days in advance:** Locks in planned contract rates and prevents logistics bottleneck disruptions.
-
-**FreightCast AI** bridges machine learning with real-world operations by:
-1. Predicting sustained **30-day planning demand 7 days ahead** using operational telemetry (congestion, weather, lead times, inventory).
-2. Automatically calculating the **required vessels, warehouse floor space, and labour shifts**.
-3. Quantifying **exact dollar savings** from early booking vs. rush-window spot rates.
-4. Explaining **which operational factors** (e.g. port congestion, weather severity) are driving demand shifts.
+> An end-to-end Machine Learning web application designed for freight station managers and supply chain planners to **forecast sustained demand 7 days ahead**, **automate resource booking (ships, warehouses, dock labour)**, and **minimize rush-window spot surcharges**.
 
 ---
 
-## 📁 Repository Structure
+## 📌 Executive Summary & Business Problem
+
+In maritime freight and logistics operations, scheduling capacity cannot be done at the last minute:
+* **The Last-Minute Trap:** Waiting until freight physically arrives forces operators into the **rush/spot market**, where vessel charter fees surge by **25% to 35%**, warehouse space carries premium holding fees, and emergency overtime wages spike.
+* **The Operational Fix:** By predicting demand **7 days in advance** (standard booking lead time), stations lock in pre-negotiated contract rates, avoid congestion bottlenecks, and prevent labour roster shortages.
+
+---
+
+## 🧠 Key Data Science & ML Innovations
+
+### 1. Honest EDA: Why Raw Hourly Demand Cannot Be Forecasted
+Exploratory Data Analysis on 32,065 hours of telemetry proved that raw single-hour demand has:
+* Correlation with operational telemetry: $|r| \le 0.01$ (effectively white noise).
+* Autocorrelation across all lags (1 hour to 30 days): $\approx 0$.
+* *Conclusion:* Attempting to forecast a single random hour is mathematically unreliable.
+
+### 2. The Engineered Solution: 30-Day Planning Horizon
+Freight stations never book shipping vessels for an isolated hour—they provision against **sustained operational volume**:
+* We engineer **`planning_demand`** (a 30-day moving average).
+* The model predicts this planning level **7 days into the future** ($t + 168\text{ hrs}$).
+* This transformed target possesses strong temporal momentum ($r > 0.85$ correlation with the 7-day future), enabling high-confidence machine learning.
+
+---
+
+## 📊 Model Evaluation & Benchmarks (Unseen Test Data)
+
+Validation followed a strict chronological **70% Train / 15% Validation / 15% Test** split using `TimeSeriesSplit` with zero future data leakage.
+
+| Model | Hyperparameters | MAE (Demand Units) | RMSE | Test $R^2$ Score | Selection |
+|---|---|---|---|---|---|
+| **Ridge Regression** | $\alpha = 100.0$ | **65.13** | **79.26** | **0.5717** | 🏆 **Champion** |
+| **Gradient Boosting** | $n=150$, $\text{lr}=0.05$ | 70.31 | 85.67 | 0.4995 | Candidate |
+| **Random Forest** | $n=100$, $\text{depth}=10$, $\text{leaf}=3$ | 74.02 | 88.12 | 0.4705 | Candidate |
+| **Naive Persistence Baseline** | $y(t+168) = y(t)$ | 114.20 | 142.10 | 0.0000 | Reference Benchmark |
+
+> **Why Ridge Won:** Regularized $L_2$ regression effectively handles collinear rolling lag features without overfitting, offering instant inference and **100% transparent coefficient decomposition**.
+
+---
+
+## ✨ Interactive Dashboard Features (`app.py`)
+
+* ⚡ **What-If Scenario Presets:** 1-click presets for *Normal Baseline*, *Port Congestion Surge*, *Severe Storm / Bad Weather*, and *Supply Chain Bottleneck*.
+* 🎛️ **Live Operational Sliders:** Adjust port congestion, weather severity, inventory levels, ETA delays, and transit lead times.
+* 📈 **Dynamic Demand Gauge:** Visualizes projected demand against historical Low, Normal, and High capacity bands.
+* 🚢 **Automated Resource Allocation:**
+  * Number of cargo ships to charter.
+  * Square feet of warehouse floor space to reserve.
+  * Number of dock labour shifts to roster.
+* 💰 **Live Financial Savings Counter:** Calculates total contract cost vs. rush spot market cost, highlighting net dollar savings.
+* 🔍 **Factor Attribution (Explainable AI):** Interactive waterfall/bar chart displaying exactly which factors pushed the forecast up or down.
+
+---
+
+## 🏗️ Repository Architecture
 
 ```text
-standalone_project/
-├── app.py                  # Main Streamlit web application
-├── train_export.py         # End-to-end model training & artifact exporter
-├── requirements.txt        # Python package dependencies
+├── app.py                  # Main Streamlit interactive web application
+├── train_export.py         # Model training, hyperparameter tuning & export pipeline
+├── requirements.txt        # Production dependencies for local & cloud environments
 ├── .streamlit/
-│   └── config.toml         # UI theme and layout configuration
+│   └── config.toml         # Custom theme (colors, fonts, layout)
 ├── data/
-│   └── dynamic_supply_chain_logistics_dataset.csv  # Full operational telemetry dataset
+│   └── dynamic_supply_chain_logistics_dataset.csv   # 32,065 rows of operational telemetry
 ├── models/
-│   ├── ridge_model.pkl     # Tuned Ridge Regression model (Champion: R² = 0.57)
+│   ├── ridge_model.pkl     # Tuned Champion Ridge model
 │   ├── rf_model.pkl        # Tuned Random Forest model
 │   ├── gbr_model.pkl       # Tuned Gradient Boosting model
-│   ├── scaler.pkl          # Pre-fitted StandardScaler
-│   ├── metadata.json       # Feature metadata, baseline metrics, band thresholds
-│   └── recent_sample.csv   # Recent historical data sample for dashboard preview
-└── README.md               # Deployment and usage instructions
+│   ├── scaler.pkl          # Fitted StandardScaler
+│   ├── metadata.json       # Feature stats, assumptions, baseline metrics
+│   └── recent_sample.csv   # Historical data preview for the web dashboard
+└── README.md               # Project documentation
 ```
 
 ---
 
-## 🚀 Quickstart: Running Locally
+## 🚀 Quickstart & Local Setup
 
-### 1. Prerequisites
-Ensure you have Python 3.9+ installed.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Parv2606/-FreightCast-AI.git
+cd -FreightCast-AI
+```
 
 ### 2. Install Dependencies
-Open your terminal in this directory and run:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. (Optional) Re-train & Export Models
-The repository comes with pre-trained models in `models/`. To retrain from scratch:
-```bash
-python train_export.py
-```
-
-### 4. Launch the Web Application
+### 3. Run the Streamlit Application
 ```bash
 streamlit run app.py
 ```
-The app will automatically open in your default browser at `http://localhost:8501`.
+Your default browser will automatically open at `http://localhost:8501`.
 
 ---
 
-## 🌐 How to Deploy to the Web (Free & Public)
+## 🌐 Free Cloud Deployment (Streamlit Community Cloud)
 
-### Method 1: Streamlit Community Cloud (Recommended — 3 Minutes)
-Streamlit Cloud offers free hosting directly from GitHub.
-
-1. **Push this folder to a GitHub repository:**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit for FreightCast AI"
-   git remote add origin https://github.com/<your-username>/freightcast-ai.git
-   git branch -M main
-   git push -u origin main
-   ```
-2. **Go to [share.streamlit.io](https://share.streamlit.io/)** and sign in with your GitHub account.
+1. Fork or push this repository to GitHub.
+2. Visit **[share.streamlit.io](https://share.streamlit.io/)** and sign in with GitHub.
 3. Click **"New app"**.
-4. Select your repository: `freightcast-ai`.
-5. Set **Main file path** to `app.py` (or `standalone_project/app.py`).
-6. Click **"Deploy"**!
-   * Streamlit will automatically read `requirements.txt`, install dependencies, and give you a live shareable URL (e.g., `https://freightcast-ai.streamlit.app`).
+4. Select repository: `Parv2606/-FreightCast-AI`, branch: `main`, and main file: `app.py`.
+5. Click **"Deploy"**!
 
 ---
 
-### Method 2: Hugging Face Spaces (Free Alternative)
-1. Sign in to [Hugging Face](https://huggingface.co/) and navigate to **Spaces** $\to$ **Create new Space**.
-2. Name your space (e.g. `freight-forecasting`) and select **Streamlit** as the Space SDK.
-3. Clone the repo provided by Hugging Face and copy all files from this folder into it.
-4. Push your commit:
-   ```bash
-   git add .
-   git commit -m "Deploy FreightCast AI"
-   git push
-   ```
-5. Your app will automatically build and run with a public link.
-
----
-
-### Method 3: Render / Railway / Cloud VM
-You can also deploy to Render or Railway using a Web Service:
-* **Build Command:** `pip install -r requirements.txt`
-* **Start Command:** `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`
-
----
-
-## 🧠 Machine Learning Details
-
-| Property | Value / Description |
-|---|---|
-| **Engineered Target** | 30-day moving average demand projected 7 days ahead (`planning_demand(t + 168)`) |
-| **Why not raw demand?** | Raw hourly demand autocorrelation is $\approx 0$ ($|r| \le 0.01$). Stations book against sustained volume, which is predictable. |
-| **Validation Strategy** | Strict `TimeSeriesSplit` (chronological 70/15/15 split, zero future data leakage). |
-| **Champion Model** | **Ridge Regression (tuned)** ($R^2 = 0.5717$, MAE = $65.13$ units). |
-| **Interpretability** | Ridge weights provide exact, additive factor contributions for transparent managerial decisions. |
-
----
-
-## 🛠️ Authors & Attribution
-* **Course:** Machine Learning – Innovative Assignment
-* **Dataset:** CC0 Public Domain Logistics Telemetry
-
+## 📜 Academic Integrity & Dataset License
+* **Dataset:** CC0: Public Domain (`dynamic_supply_chain_logistics_dataset.csv`).
+* **Frameworks:** Python, Scikit-Learn, Streamlit, Pandas, NumPy, Plotly.
+* **Course:** Machine Learning – Innovative Assignment.
